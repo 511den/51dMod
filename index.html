@@ -1,168 +1,1114 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>51dmod - Версии модов</title>
+    <meta name="theme-color" content="#101010">
+
+    <title>51dmod — Версии модов</title>
+
     <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: white;
+        :root {
+            --bg: #101010;
+            --surface: #171717;
+            --surface-hover: #1d1d1d;
+            --border: #292929;
+            --text: #ededed;
+            --muted: #929292;
+            --accent: #10a37f;
+            --accent-hover: #0d8f70;
+        }
+
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont,
+                "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
+            line-height: 1.6;
         }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            text-align: center;
-        }
-        .header {
-            margin-bottom: 40px;
-        }
-        .logo {
-            font-size: 48px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            font-size: 20px;
-            opacity: 0.8;
-            margin-bottom: 30px;
-        }
-        .nav-btn {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 10px 20px;
-            border-radius: 5px;
+
+        a {
+            color: inherit;
             text-decoration: none;
-            margin: 5px;
-            display: inline-block;
-            transition: all 0.3s ease;
         }
-        .nav-btn:hover {
-            background: rgba(255,255,255,0.2);
+
+        button {
+            font-family: inherit;
         }
+
+        /* NAVIGATION */
+
+        .navbar {
+            height: 68px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(16, 16, 16, 0.92);
+            backdrop-filter: blur(16px);
+        }
+
+        .brand {
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: -.8px;
+        }
+
+        .brand span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+            color: var(--muted);
+            transition: color .2s;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .github-link {
+            border: 1px solid var(--border);
+            padding: 7px 14px;
+            border-radius: 7px;
+            color: var(--text) !important;
+        }
+
+        /* MAIN */
+
+        .container {
+            max-width: 1050px;
+            margin: auto;
+            padding: 75px 24px;
+        }
+
+        .hero {
+            margin-bottom: 65px;
+            animation: appear .6s ease;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 10px rgba(16, 163, 127, .5);
+        }
+
+        h1 {
+            font-size: clamp(38px, 6vw, 58px);
+            letter-spacing: -2.5px;
+            line-height: 1.12;
+            font-weight: 650;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 16px;
+            max-width: 570px;
+        }
+
+        /* SECTION */
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 23px;
+            letter-spacing: -.6px;
+            font-weight: 600;
+        }
+
+        .section-header p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .edition-count {
+            color: var(--muted);
+            font-size: 12px;
+            border: 1px solid var(--border);
+            padding: 6px 11px;
+            border-radius: 20px;
+        }
+
+        /* EDITION CARDS */
+
         .editions {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 40px 0;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
         }
+
         .edition-card {
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s ease;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            position: relative;
+            transition: border-color .25s,
+                transform .25s, background .25s;
+            animation: appear .6s ease both;
         }
+
         .edition-card:hover {
-            transform: translateY(-5px);
+            border-color: #484848;
+            background: var(--surface-hover);
+            transform: translateY(-3px);
         }
+
+        .card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
         .edition-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
+            font-size: 19px;
+            font-weight: 600;
+            letter-spacing: -.4px;
         }
-        .download-btn {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 12px 24px;
+
+        .edition-tag {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .7px;
+            color: var(--accent);
+            background: rgba(16, 163, 127, .1);
+            padding: 5px 9px;
             border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-            text-decoration: none;
-            display: inline-block;
-            transition: background 0.3s ease;
+            white-space: nowrap;
         }
-        .download-btn:hover {
-            background: #45a049;
-        }
+
         .version-info {
-            background: rgba(255,255,255,0.05);
-            padding: 15px;
+            display: flex;
+            gap: 20px;
+            padding: 12px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 17px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .info-label {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .info-value {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .edition-card > p {
+            color: var(--muted);
+            font-size: 13px;
+            min-height: 62px;
+            margin-bottom: 20px;
+        }
+
+        /* DOWNLOAD BUTTON */
+
+        .download-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 9px;
+            width: 100%;
+            padding: 11px 16px;
+            background: #252525;
+            border: 1px solid #353535;
+            color: #eee;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 550;
+            transition: all .2s;
+        }
+
+        .download-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .download-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* 3.0 EDITION */
+
+        .featured {
+            border-color: rgba(16, 163, 127, .35);
+            background: linear-gradient(
+                145deg,
+                #191c1b,
+                #171717 65%
+            );
+        }
+
+        .featured:hover {
+            border-color: var(--accent);
+        }
+
+        .primary-download {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .primary-download:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+        }
+
+        /* LEGACY SECTION */
+
+        .legacy-section {
+            margin-top: 55px;
+            padding: 22px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .legacy-section h3 {
+            font-size: 15px;
+            font-weight: 550;
+            color: #b0b0b0;
+        }
+
+        .legacy-section p {
+            color: #686868;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .legacy-open {
+            background: #202020;
+            border: 1px solid #333;
+            border-radius: 7px;
+            color: #aaa;
+            padding: 10px 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .legacy-open:hover {
+            background: #292929;
+            color: #eee;
+        }
+
+        .legacy-open span {
+            color: #777;
+            margin-left: 8px;
+        }
+
+        /* MODAL */
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, .75);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeIn .2s ease;
+        }
+
+        .legacy-modal {
+            width: 100%;
+            max-width: 530px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: #181818;
+            border: 1px solid #353535;
+            border-radius: 13px;
+            padding: 27px;
+            animation: modalIn .25s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+
+        .modal-label {
+            font-size: 10px;
+            color: #737373;
+            letter-spacing: 1.5px;
+        }
+
+        .modal-header h2 {
+            font-size: 23px;
+            margin-top: 7px;
+            color: #c5c5c5;
+        }
+
+        .modal-header p {
+            color: #777;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .modal-close {
+            background: #252525;
+            color: #888;
+            border: 1px solid #353535;
+            border-radius: 7px;
+            width: 32px;
+            height: 32px;
+            font-size: 22px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .modal-close:hover {
+            color: white;
+            background: #333;
+        }
+
+        /* LEGACY CARDS */
+
+        .legacy-list {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .legacy-card {
+            background: #1d1d1d;
+            border: 1px solid #292929;
             border-radius: 8px;
-            margin: 15px 0;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            transition: .2s;
+        }
+
+        .legacy-card:hover {
+            background: #222;
+            border-color: #414141;
+        }
+
+        .legacy-card h3 {
+            font-size: 13px;
+            font-weight: 550;
+            color: #aaa;
+        }
+
+        .legacy-card p {
+            font-size: 11px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .legacy-card a {
+            font-size: 11px;
+            color: #858585;
+            white-space: nowrap;
+            transition: color .2s;
+        }
+
+        .legacy-card a:hover {
+            color: #ddd;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #292929;
+            margin-top: 20px;
+            padding-top: 15px;
+            color: #626262;
+            font-size: 10px;
+        }
+
+        /* INSTRUCTIONS */
+
+        .instructions {
+            margin-top: 65px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+        }
+
+        .instructions h2 {
+            font-size: 19px;
+            margin-bottom: 23px;
+            font-weight: 600;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+        }
+
+        .step {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            min-width: 27px;
+            height: 27px;
+            border: 1px solid var(--border);
+            background: #202020;
+            border-radius: 7px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .step-text {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .step-text strong {
+            color: var(--text);
+            display: block;
+            font-weight: 550;
+            margin-bottom: 3px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            border-top: 1px solid var(--border);
+            margin-top: 75px;
+            padding: 25px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-copy {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: var(--muted);
+            font-size: 12px;
+            transition: color .2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        /* ANIMATIONS */
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px) scale(.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 650px) {
+            .navbar {
+                padding: 0 20px;
+                height: 60px;
+            }
+
+            .nav-links {
+                gap: 13px;
+            }
+
+            .nav-links a {
+                font-size: 11px;
+            }
+
+            .container {
+                padding: 55px 18px;
+            }
+
+            .hero {
+                margin-bottom: 45px;
+            }
+
+            h1 {
+                letter-spacing: -1.5px;
+            }
+
+            .editions {
+                grid-template-columns: 1fr;
+            }
+
+            .edition-card > p {
+                min-height: auto;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                align-items: flex-start;
+            }
+
+            footer {
+                flex-direction: column;
+                text-align: center;
+                padding: 25px 18px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .legacy-section {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .legacy-open {
+                width: 100%;
+            }
+
+            .legacy-modal {
+                padding: 20px;
+            }
+
+            .github-link {
+                display: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                transition-duration: .01ms !important;
+                scroll-behavior: auto !important;
+            }
         }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="logo">51dmod</div>
-            <div class="subtitle">Версии модов и редакций</div>
+
+    <!-- NAVIGATION -->
+
+    <nav class="navbar">
+
+        <a href="index.html" class="brand">
+            51d<span>mod</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="index.html">Главная</a>
+            <a href="#editions">Редакции</a>
+            <a href="#instructions">Установка</a>
+
+            <a href="https://github.com/511den/51dMod"
+               class="github-link">
+                GitHub ↗
+            </a>
         </div>
 
-        <!-- Навигация -->
-        <div style="margin-bottom: 30px;">
-            <a href="index.html" class="nav-btn">🏠 Главная</a>
-        </div>
+    </nav>
 
-        <!-- Секция редакций -->
-        <h2>🎮 Доступные редакции модов</h2>
-        <p>Выберите подходящую версию для ваших нужд</p>
-        
-        <div class="editions">
-            <div class="edition-card">
-                <div class="edition-title">Ultimate Edition</div>
-                <div class="version-info">
-                    <strong>Версия: 1.0.0</strong><br>
-                    Размер: ~3 KB
-                </div>
-                <p>Увеличенная с дополнительными функциями и оптимизациями. Рекомендуется для опытных пользователей.</p>
-                <a href="https://raw.githubusercontent.com/511den/51dMod/main/mods/51dmodULTIMATE.rar" class="download-btn">Скачать Ultimate</a>
-            </div>
-            
-            <div class="edition-card">
-                <div class="edition-title">Default Edition</div>
-                <div class="version-info">
-                    <strong>Версия: 1.0.0</strong><br>
-                    Размер: ~2 KB
-                </div>
-                <p>Полная версия для большинства пользователей. Оптимальный баланс функций и производительности.</p>
-                <a href="https://raw.githubusercontent.com/511den/51dMod/main/mods/51dmod.rar" class="download-btn">Скачать Default</a>
-            </div>
-            
-            <div class="edition-card">
-                <div class="edition-title">Mini Edition</div>
-                <div class="version-info">
-                    <strong>Версия: 1.0.0</strong><br>
-                    Размер: ~600 B
-                </div>
-                <p>Облегченная версия. Минимальный набор функций для максимальной производительности.</p>
-                <a href="https://raw.githubusercontent.com/511den/51dMod/main/mods/51dmodMINI.rar" class="download-btn">Скачать Mini</a>
+    <!-- MAIN CONTENT -->
+
+    <main class="container">
+
+        <!-- HERO -->
+
+        <header class="hero">
+
+            <div class="eyebrow">
+                <span class="status-dot"></span>
+                51DMOD PROJECT
             </div>
 
-            <div class="edition-card">
-                <div class="edition-title">2.0 Edition</div>
-                <div class="version-info">
-                    <strong>Версия: 1.0.0</strong><br>
-                    Размер: ~1.3 KB
+            <h1>
+                Версии модов<br>
+                и редакции.
+            </h1>
+
+            <p>
+                Выберите подходящую редакцию 51dmod.
+                Разные версии, возможности и настройки
+                для ваших задач.
+            </p>
+
+        </header>
+
+        <!-- EDITIONS -->
+
+        <section id="editions">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Актуальная версия</h2>
+                    <p>Последняя редакция проекта 51dmod.</p>
                 </div>
-                <p>Версия без ограничений. комманды отсутствуют. нейросеть отвечает на любые комманды.</p>
-                <a href="https://raw.githubusercontent.com/511den/51dMod/main/mods/51dmod2.0.rar" class="download-btn">Скачать 2.0</a>
+
+                <span class="edition-count">
+                    LATEST
+                </span>
+
             </div>
+
+            <div class="editions">
+
+                <!-- 3.0 EDITION -->
+
+                <article class="edition-card featured">
+
+                    <div class="card-top">
+
+                        <h3 class="edition-title">
+                            3.0 Edition
+                        </h3>
+
+                        <span class="edition-tag">
+                            NEW RELEASE
+                        </span>
+
+                    </div>
+
+                    <div class="version-info">
+
+                        <div class="info-item">
+                            <span class="info-label">
+                                Версия
+                            </span>
+
+                            <span class="info-value">
+                                3.0
+                            </span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">
+                                Статус
+                            </span>
+
+                            <span class="info-value">
+                                Latest
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <p>
+                        Новое поколение 51dmod.
+                        Обновлённая редакция проекта.
+                        Выберите новую версию для использования.
+                    </p>
+
+                    <a href="https://raw.githubusercontent.com/511den/51dMod/main/mods/51dmod3.0.rar"
+                       class="download-btn primary-download">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <path d="m7 10 5 5 5-5"/>
+                            <path d="M12 15V3"/>
+
+                        </svg>
+
+                        Скачать 3.0 Edition
+
+                    </a>
+
+                </article>
+
+            </div>
+
+            <!-- LEGACY BUTTON -->
+
+            <div class="legacy-section">
+
+                <div>
+                    <h3>Предыдущие версии</h3>
+
+                    <p>
+                        Архив устаревших редакций проекта.
+                    </p>
+                </div>
+
+                <button
+                    class="legacy-open"
+                    onclick="openLegacy()"
+                    aria-haspopup="dialog"
+                    aria-controls="legacyModal">
+
+                    Архив Legacy
+                    <span>04 версии ↗</span>
+
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- INSTALLATION -->
+
+        <section class="instructions" id="instructions">
+
+            <h2>Инструкция по установке</h2>
+
+            <div class="steps">
+
+                <div class="step">
+
+                    <span class="step-number">01</span>
+
+                    <div class="step-text">
+                        <strong>Выберите редакцию</strong>
+
+                        Скачайте подходящую версию мода.
+                    </div>
+
+                </div>
+
+                <div class="step">
+
+                    <span class="step-number">02</span>
+
+                    <div class="step-text">
+                        <strong>Распакуйте архив</strong>
+
+                        Извлеките файл .java из скачанного архива.
+                    </div>
+
+                </div>
+
+                <div class="step">
+
+                    <span class="step-number">03</span>
+
+                    <div class="step-text">
+                        <strong>Откройте нейросеть</strong>
+
+                        Переместите содержимое файла в чат
+                        с нейросетью. Рекомендуется DeepSeek.
+                    </div>
+
+                </div>
+
+                <div class="step">
+
+                    <span class="step-number">04</span>
+
+                    <div class="step-text">
+                        <strong>Начните работу</strong>
+
+                        Отправьте сообщение и настройте параметры
+                        под свои задачи.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- LEGACY MODAL -->
+
+    <div
+        class="modal-overlay"
+        id="legacyModal"
+        onclick="closeLegacyOutside(event)"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="legacyTitle"
+        aria-hidden="true">
+
+        <div class="legacy-modal">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="modal-label">
+                        51DMOD ARCHIVE
+                    </span>
+
+                    <h2 id="legacyTitle">
+                        Legacy versions
+                    </h2>
+
+                    <p>
+                        Предыдущие редакции проекта.
+                    </p>
+
+                </div>
+
+                <button
+                    class="modal-close"
+                    onclick="closeLegacy()"
+                    aria-label="Закрыть">
+
+                    ×
+
+                </button>
+
+            </div>
+
+            <div class="legacy-list">
+
+                <!-- ULTIMATE -->
+
+                <div class="legacy-card">
+
+                    <div>
+                        <h3>Ultimate Edition</h3>
+                        <p>Версия 1.0.0 · ~3 KB</p>
+                    </div>
+
+                    <a href="https://raw.githubusercontent.com/511den/51dMod/main/mods/51dmodULTIMATE.rar">
+                        Скачать ↓
+                    </a>
+
+                </div>
+
+                <!-- DEFAULT -->
+
+                <div class="legacy-card">
+
+                    <div>
+                        <h3>Default Edition</h3>
+                        <p>Версия 1.0.0 · ~2 KB</p>
+                    </div>
+
+                    <a href="https://raw.githubusercontent.com/511den/51dMod/main/mods/51dmod.rar">
+                        Скачать ↓
+                    </a>
+
+                </div>
+
+                <!-- MINI -->
+
+                <div class="legacy-card">
+
+                    <div>
+                        <h3>Mini Edition</h3>
+                        <p>Версия 1.0.0 · ~600 B</p>
+                    </div>
+
+                    <a href="https://raw.githubusercontent.com/511den/51dMod/main/mods/51dmodMINI.rar">
+                        Скачать ↓
+                    </a>
+
+                </div>
+
+                <!-- 2.0 -->
+
+                <div class="legacy-card">
+
+                    <div>
+                        <h3>2.0 Edition</h3>
+                        <p>Версия 1.0.0 · ~1.3 KB</p>
+                    </div>
+
+                    <a href="https://raw.githubusercontent.com/511den/51dMod/main/mods/51dmod2.0.rar">
+                        Скачать ↓
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                Legacy — архив предыдущих версий 51dmod.
+            </div>
+
         </div>
 
-        <!-- Инструкция -->
-        <div style="margin-top: 40px; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 10px;">
-            <h3>📋 Инструкция по установке</h3>
-            <p><strong>1.</strong> Скачайте нужную редакцию мода</p>
-            <p><strong>2.</strong> Распакуйте и переместите файл .java в чат с любой нейросетью (желательно deepseek)</p>
-            <p><strong>3.</strong> Отправьте собщение</p>
-            <p><strong>4.</strong> Настройте параметры под свои нужды</p>
-        </div>
-        
-        <div style="margin-top: 40px;">
-            <p>Сделано github 511den © 2025</p>
-            <p><a href="https://github.com/511den/51dMod" style="color: #87CEEB;">GitHub репозиторий</a> | 
-               <a href="https://github.com/511den/51dMod/releases" style="color: #87CEEB;">Все релизы</a></p>
-        </div>
     </div>
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="footer-copy">
+            © 2025 51dmod. Создано 511den.
+        </div>
+
+        <div class="footer-links">
+
+            <a href="https://github.com/511den/51dMod">
+                Репозиторий
+            </a>
+
+            <a href="https://github.com/511den/51dMod/releases">
+                Все релизы
+            </a>
+
+        </div>
+
+    </footer>
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        const legacyModal =
+            document.getElementById('legacyModal');
+
+        const legacyButton =
+            document.querySelector('.legacy-open');
+
+        function openLegacy() {
+
+            legacyModal.classList.add('active');
+
+            legacyModal.setAttribute('aria-hidden', 'false');
+
+            document.body.style.overflow = 'hidden';
+
+            legacyModal.querySelector('.modal-close').focus();
+
+        }
+
+        function closeLegacy() {
+
+            legacyModal.classList.remove('active');
+
+            legacyModal.setAttribute('aria-hidden', 'true');
+
+            document.body.style.overflow = '';
+
+            legacyButton.focus();
+
+        }
+
+        function closeLegacyOutside(event) {
+
+            if (event.target === legacyModal) {
+                closeLegacy();
+            }
+
+        }
+
+        document.addEventListener('keydown', function(event) {
+
+            if (event.key === 'Escape' &&
+                legacyModal.classList.contains('active')) {
+
+                closeLegacy();
+
+            }
+
+        });
+
+    </script>
+
 </body>
 </html>
